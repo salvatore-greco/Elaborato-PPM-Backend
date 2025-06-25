@@ -29,7 +29,7 @@
     "model": "events.Events",
     "pk": 3,
     "fields": {
-      "name": "Conferenza AI",
+      "name": "AI Conference",
       "place_name": "Torino Fiere",
       "place_address": "Corso Duca, Torino",
       "price": "25.00",
