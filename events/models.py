@@ -11,7 +11,7 @@ class Events(models.Model):
     place_address = models.CharField(max_length=100)
     price = models.DecimalField(decimal_places=2, max_digits=5)
     date = models.DateTimeField(auto_now=True)
-    organizer_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='organizer_id')
+    organizer_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='event_organizer')
     registration = models.ManyToManyField(to=CustomUser)
 
 # class Registration(models.Model):

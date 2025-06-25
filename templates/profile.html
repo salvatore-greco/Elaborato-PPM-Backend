@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <p>Welcome {{ first_name }} {{ last_name }}</p>
+    <div class="container">
+        {% if user.is_organizer %}
+            <p>Events you have organized</p>
+        {% else %}
+            <p>Events you have registered for</p>
+        {% endif %}
+        <div class="list-group">
+            {% for event in events %}
+                <a href="#" class="list-group-item list-group-item-action">{{ event.name }}</a>
+            {% endfor %}
+            {% comment %}<a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                The current link item
+            </a>
+            <a href="#" class="list-group-item list-group-item-action">A second link item</a>
+            <a href="#" class="list-group-item list-group-item-action">A third link item</a>
+            <a href="#" class="list-group-item list-group-item-action">A fourth link item</a>{% endcomment %}
+        </div>
+
+    </div>
+{% endblock %}
