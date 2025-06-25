@@ -1,0 +1,41 @@
+[
+{
+    "model": "events.Events",
+    "pk": 1,
+    "fields": {
+      "name": "Hackathon 2025",
+      "place_name": "Campus Milano",
+      "place_address": "Via Roma 10, Milano",
+      "price": "10.00",
+      "date": "2025-07-10T10:00:00Z",
+      "organizer_id": 12,
+      "registration": [11]
+    }
+  },
+  {
+    "model": "events.Events",
+    "pk": 2,
+    "fields": {
+      "name": "Workshop Python",
+      "place_name": "Tech Center",
+      "place_address": "Viale Innovazione 5, Bologna",
+      "price": "0.00",
+      "date": "2025-07-15T15:00:00Z",
+      "organizer_id": 12,
+      "registration": [11]
+    }
+  },
+  {
+    "model": "events.Events",
+    "pk": 3,
+    "fields": {
+      "name": "Conferenza AI",
+      "place_name": "Torino Fiere",
+      "place_address": "Corso Duca, Torino",
+      "price": "25.00",
+      "date": "2025-08-01T09:00:00Z",
+      "organizer_id": 12,
+      "registration": []
+    }
+  }
+]
