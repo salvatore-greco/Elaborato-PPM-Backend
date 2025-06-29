@@ -2,24 +2,30 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <p>Welcome {{ first_name }} {{ last_name }}</p>
-    <div class="container">
-        {% if user.is_organizer %}
-            <p>Events you have organized</p>
-        {% else %}
-            <p>Events you have registered for</p>
-        {% endif %}
-        <div class="list-group">
-            {% for event in events %}
-                <a href="{% url 'events:event-details' event.id %}" class="list-group-item list-group-item-action">{{ event.name }}</a>
-            {% endfor %}
-            {% comment %}<a href="#" class="list-group-item list-group-item-action active" aria-current="true">
-                The current link item
-            </a>
-            <a href="#" class="list-group-item list-group-item-action">A second link item</a>
-            <a href="#" class="list-group-item list-group-item-action">A third link item</a>
-            <a href="#" class="list-group-item list-group-item-action">A fourth link item</a>{% endcomment %}
+    <div class="container mt-5">
+        <div class="mb-4">
+            <h2 class="fw-light">Welcome, <strong>{{ first_name }} {{ last_name }}</strong></h2>
         </div>
 
+        {% if user.is_organizer %}
+            <h4 class="mb-3 text-primary">Events you have organized</h4>
+        {% else %}
+            <h4 class="mb-3 text-success">Events you have registered for</h4>
+        {% endif %}
+
+        {% if events %}
+            <div class="list-group shadow-sm">
+                {% for event in events %}
+                    <a href="{% url 'events:event-details' event.id %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        {{ event.name }}
+                        <span class="badge bg-secondary">{{ event.date }}</span>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info mt-3" role="alert">
+                No events found.
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

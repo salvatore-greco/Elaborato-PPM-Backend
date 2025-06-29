@@ -1,17 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Upcoming events</h1>
-    <div class="row row-cols-3 mt-5">
+    <h1 class="mb-4">Upcoming Events</h1>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
         {% for event in events %}
-            <div class="col-md-4 mb-4">
-                <!-- card evento -->
-                <div class="card">
+            <div class="col">
+                <!-- Event Card -->
+                <div class="card h-100 shadow-sm">
                     <div class="card-body">
                         <h5 class="card-title">{{ event.name }}</h5>
-                        <p class="card-text">{{ event.date }}@ {{ event.place_name }}</p>
-                        <p class="card-text">{{ event.price }}€</p>
-                        <a href="{% url 'events:event-details' event.id %}" class="btn btn-primary">Details</a>
+                        <p class="card-text text-muted mb-1">
+                            <i class="bi bi-calendar-event"></i> {{ event.date }}<br>
+                            <i class="bi bi-geo-alt-fill"></i> {{ event.place_name }}
+                        </p>
+                        <p class="card-text fw-semibold">{{ event.price }}€</p>
+                        <a href="{% url 'events:event-details' event.id %}" class="btn btn-outline-primary btn-sm">Details</a>
                     </div>
                 </div>
             </div>
