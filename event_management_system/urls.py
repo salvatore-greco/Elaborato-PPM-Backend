@@ -21,7 +21,7 @@ from . import views
 from events import views as event_views
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", event_views.homepage_view, name='home'),
+    path("", event_views.HomepageView.as_view(), name='home'),
     path("users/", include('users.urls')),
     path('events/', include('events.urls'))
 ]

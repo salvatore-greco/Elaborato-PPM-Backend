@@ -1,10 +1,16 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.views.generic import ListView
+
 from events.models import Events
 # Create your views here.
-def homepage_view(request):
-    events = Events.objects.all()
-    return render(request, 'home.html', context={'events': events})
+# def homepage_view(request):
+#     events = Events.objects.all()
+#     return render(request, 'home.html', context={'events': events})
+class HomepageView(ListView):
+    model = Events
+    template_name = 'home.html'
+
 
 def event_details_view(request, id):
     user = request.user

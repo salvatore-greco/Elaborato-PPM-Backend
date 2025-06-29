@@ -3,7 +3,7 @@
 {% block content %}
     <h1 class="mb-4">Upcoming Events</h1>
     <div class="row row-cols-1 row-cols-md-3 g-4">
-        {% for event in events %}
+        {% for event in object_list %}
             <div class="col">
                 <!-- Event Card -->
                 <div class="card h-100 shadow-sm">
