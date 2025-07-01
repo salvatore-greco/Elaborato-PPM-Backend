@@ -23,7 +23,11 @@
     {% if messages %}
         {% for message in messages %}
             {% toast %}
-               ✅ Successfully deleted!
+               {% if message.message == 'created' %}
+                ✅ Successfully created!
+                {% elif message.message == 'delete' %}
+                ✅ Successfully deleted!
+                {% endif %}
             {% endtoast %}
         {% endfor %}
     {% endif %}

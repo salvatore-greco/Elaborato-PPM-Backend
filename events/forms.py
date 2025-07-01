@@ -1,6 +1,10 @@
 from django.forms import ModelForm
+from django import forms
 
 from events.models import Events
+from django.db import models
+
+
 
 
 class EventForm(ModelForm):
