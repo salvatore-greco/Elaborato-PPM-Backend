@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib import messages
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
@@ -58,6 +59,9 @@ class ManageEventView(PermissionRequiredMixin, UpdateView, DeletionMixin):
         return HttpResponseRedirect(self.request.path)
 
     def post(self, request, *args, **kwargs):
+        event = self.get_object()
+        if request.user.id != event.organizer_id_id:
+            raise PermissionDenied
         data = self.request.POST.get('btn')
         if data == 'update':
             return super().post(request, *args, *kwargs)
@@ -65,3 +69,9 @@ class ManageEventView(PermissionRequiredMixin, UpdateView, DeletionMixin):
             messages.add_message(self.request, messages.SUCCESS, 'delete')
             return super().delete(request, *args, *kwargs)
         return None
+
+    def get(self, request, *args, **kwargs):
+        event = self.get_object()
+        if request.user.id != event.organizer_id_id:
+            raise PermissionDenied
+        return super().get(request, *args, **kwargs)
