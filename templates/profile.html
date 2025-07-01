@@ -7,11 +7,14 @@
             <h2 class="fw-light">Welcome, <strong>{{ first_name }} {{ last_name }}</strong></h2>
         </div>
 
+    <div class="d-flex justify-content-between align-items-center">
         {% if user.is_organizer %}
             <h4 class="mb-3 text-primary">Events you have organized</h4>
+            <a href="{% url 'events:organizer-create' %}" class="btn btn-primary">Create event</a>
         {% else %}
             <h4 class="mb-3 text-success">Events you have registered for</h4>
         {% endif %}
+    </div>
 
         {% if events %}
             <div class="list-group shadow-sm">
