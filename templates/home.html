@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load events_extras %}
 
 {% block content %}
     <h1 class="mb-4">Upcoming Events</h1>
@@ -19,5 +20,12 @@
                 </div>
             </div>
         {% endfor %}
+    {% if messages %}
+        {% for message in messages %}
+            {% toast %}
+               ✅ Successfully deleted!
+            {% endtoast %}
+        {% endfor %}
+    {% endif %}
     </div>
 {% endblock %}

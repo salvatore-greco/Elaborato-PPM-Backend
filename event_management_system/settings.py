@@ -132,3 +132,4 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 LOGOUT_REDIRECT_URL="home"
 LOGIN_URL='/users/login'
+MESSAGE_STORAGE='django.contrib.messages.storage.session.SessionStorage'
