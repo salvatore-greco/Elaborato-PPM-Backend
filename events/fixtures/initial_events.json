@@ -37,5 +37,18 @@
       "organizer_id": 12,
       "registration": []
     }
+  },
+  {
+  "model": "events.Events",
+  "pk": 4,
+  "fields": {
+    "name": "Data Science Bootcamp",
+    "place_name": "Politecnico di Milano",
+    "place_address": "Piazza Leonardo da Vinci 32, Milano",
+    "price": "50.00",
+    "date": "2025-08-20T09:30:00Z",
+    "organizer_id": 18,
+    "registration": [11]
   }
+}
 ]
