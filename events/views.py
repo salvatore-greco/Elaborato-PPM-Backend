@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView
 
 from events.models import Events
@@ -14,7 +14,7 @@ class HomepageView(ListView):
 
 def event_details_view(request, id):
     user = request.user
-    event = Events.objects.get(id=id)
+    event = get_object_or_404(Events, id=id)
     registered = False
     display_toast = False
     if request.method == 'GET':
