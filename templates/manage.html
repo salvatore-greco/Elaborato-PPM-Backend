@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load events_extras %}
+
+{% block content %}
+    <h1>Manage event {{ event.name }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success" value="update" name="btn">Update</button>
+        <button type="submit" class="btn btn-danger" value="delete" name="btn">Delete</button>
+    </form>
+    {% if messages %}
+        {% for message in messages %}
+          {% toast %}
+              ✅ Successfully updated!
+          {% endtoast %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}

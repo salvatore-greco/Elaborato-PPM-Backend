@@ -1,8 +1,14 @@
-from django.http import HttpResponse
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib import messages
+from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView
+from django.urls import reverse
+from django.views.generic import ListView, UpdateView
+from django.views.generic.edit import DeletionMixin
 
+from events.forms import EventForm
 from events.models import Events
+
 # Create your views here.
 # def homepage_view(request):
 #     events = Events.objects.all()
@@ -12,7 +18,7 @@ class HomepageView(ListView):
     template_name = 'home.html'
 
 
-def event_details_view(request, id):
+def event_details_view(request, id:int) -> HttpResponse :
     user = request.user
     event = get_object_or_404(Events, id=id)
     registered = False
@@ -32,3 +38,30 @@ def event_details_view(request, id):
                 event.registration.remove(user)
                 registered = False
     return render(request, 'event-details.html', context={'event': event, 'registered': registered, 'toast': display_toast})
+
+
+class ManageEventView(PermissionRequiredMixin, UpdateView, DeletionMixin):
+    form_class = EventForm
+    template_name = 'manage.html'
+    permission_required = ('events.change_events', 'events.delete_events')
+    raise_exception = True
+    model = Events
+
+    # Called only by delete from deletion mixin
+    def get_success_url(self):
+        return reverse('home')
+
+    def form_valid(self, form):
+        if form.has_changed():
+            messages.add_message(self.request, messages.SUCCESS, 'update')
+            return super().form_valid(form)
+        return HttpResponseRedirect(self.request.path)
+
+    def post(self, request, *args, **kwargs):
+        data = self.request.POST.get('btn')
+        if data == 'update':
+            return super().post(request, *args, *kwargs)
+        elif data == 'delete':
+            messages.add_message(self.request, messages.SUCCESS, 'delete')
+            return super().delete(request, *args, *kwargs)
+        return None
