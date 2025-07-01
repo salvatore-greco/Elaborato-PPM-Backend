@@ -1,6 +1,7 @@
 from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.views import LoginView, LogoutView
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -37,6 +38,7 @@ def profile_view(request):
         if user.is_organizer:
             events = Events.objects.filter(organizer_id=user.id)
         else:
+            if not request.user.has_perm('events.view_own_registration'): raise PermissionDenied
             events = Events.objects.filter(registration=user.id)
         return render(request, 'profile.html',
                       {'first_name': user.first_name, 'last_name': user.last_name, 'events': events})
