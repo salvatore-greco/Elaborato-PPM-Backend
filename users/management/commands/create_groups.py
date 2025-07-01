@@ -9,6 +9,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         organizer,_ = Group.objects.get_or_create(name='organizers')
         attendee,_ = Group.objects.get_or_create(name='attendee')
+        attendee_users = CustomUser.objects.filter(is_organizer=False).only('id')
+        organizer_users = CustomUser.objects.filter(is_organizer=True).only('id')
+        admin_users = CustomUser.objects.filter(is_superuser=True).only('id')
         content_type = ContentType.objects.get_for_model(Events)
         permissions = Permission.objects.all()
         organizer.permissions.add(permissions.get(codename='add_events'))
@@ -21,3 +24,14 @@ class Command(BaseCommand):
         attendee.permissions.add(permissions.get(codename='view_events'))
         attendee.permissions.add(permissions.get(codename='can_register'))
         attendee.permissions.add(permissions.get(codename='view_own_registration'))
+
+        # Assigning current users a group
+        attendee.user_set.add(*attendee_users)
+        attendee.user_set.remove(*organizer_users)
+
+        organizer.user_set.add(*organizer_users)
+        organizer.user_set.remove(*attendee_users)
+
+        # removing admin from those groups
+        attendee.user_set.remove(*admin_users)
+        organizer.user_set.remove(*admin_users)
