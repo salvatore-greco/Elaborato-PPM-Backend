@@ -13,6 +13,12 @@ class Events(models.Model):
     date = models.DateTimeField(auto_now=True)
     organizer_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='event_organizer')
     registration = models.ManyToManyField(to=CustomUser)
+    class Meta:
+        permissions = [
+            ("can_register", "Determine whether a user can register"),
+            ("view_own_registration", "Determine whether a user can view his own registration"),
+            ("view_attendee", "Determine whether a user can view attendee at their own events")
+        ]
 
 # class Registration(models.Model):
 #     registration = models.ManyToManyField(
