@@ -3,8 +3,8 @@ from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
-from django.urls import reverse
-from django.views.generic import ListView, UpdateView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import ListView, UpdateView, CreateView
 from django.views.generic.edit import DeletionMixin
 
 from events.forms import EventForm
@@ -75,3 +75,17 @@ class ManageEventView(PermissionRequiredMixin, UpdateView, DeletionMixin):
         if request.user.id != event.organizer_id_id:
             raise PermissionDenied
         return super().get(request, *args, **kwargs)
+
+
+class CreateEventView(PermissionRequiredMixin, CreateView):
+    model = Events
+    form_class = EventForm
+    template_name = 'event-create.html'
+    permission_required = 'events.add_events'
+    raise_exception = True
+    success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+        form.instance.organizer_id_id = self.request.user.id
+        messages.add_message(self.request, messages.SUCCESS, 'created')
+        return super().form_valid(form)
