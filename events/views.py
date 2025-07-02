@@ -24,6 +24,7 @@ def event_details_view(request, id:int) -> HttpResponse :
     event = get_object_or_404(Events, id=id)
     registered = False
     display_toast = False
+    attendance = event.registration.count()
     if request.method == 'GET':
         for ev_user in event.registration.all():
             if ev_user.id == user.id:
@@ -38,7 +39,7 @@ def event_details_view(request, id:int) -> HttpResponse :
             elif data == 0:
                 event.registration.remove(user)
                 registered = False
-    return render(request, 'event-details.html', context={'event': event, 'registered': registered, 'toast': display_toast})
+    return render(request, 'event-details.html', context={'event': event, 'registered': registered, 'toast': display_toast, 'attendance': attendance})
 
 
 class ManageEventView(PermissionRequiredMixin, UpdateView, DeletionMixin):

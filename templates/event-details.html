@@ -15,7 +15,7 @@
                     <span class="badge bg-secondary">{{ event.date }}</span>
                     <span class="ms-2"><i class="bi bi-geo-alt-fill"></i> {{ event.place_name }}, {{ event.place_address }}</span>
                 </h5>
-
+                <span>Attendance: {{ attendance }}</span>
                 <p class="card-text fs-5">Event description goes here.</p>
 
                 {% if user.is_authenticated and not user.is_organizer %}
