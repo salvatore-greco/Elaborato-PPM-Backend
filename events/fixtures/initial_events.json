@@ -1,5 +1,5 @@
 [
-{
+  {
     "model": "events.Events",
     "pk": 1,
     "fields": {
@@ -9,7 +9,8 @@
       "price": "10.00",
       "date": "2025-07-10T10:00:00Z",
       "organizer_id": 12,
-      "registration": [11]
+      "registration": [11],
+      "description": "A full-day hackathon where teams of developers and designers build innovative solutions in a creative tech environment."
     }
   },
   {
@@ -22,7 +23,8 @@
       "price": "0.00",
       "date": "2025-07-15T15:00:00Z",
       "organizer_id": 12,
-      "registration": [11]
+      "registration": [11],
+      "description": "A free Python workshop for beginners to learn the basics of programming through hands-on coding exercises."
     }
   },
   {
@@ -35,20 +37,22 @@
       "price": "25.00",
       "date": "2025-08-01T09:00:00Z",
       "organizer_id": 12,
-      "registration": []
+      "registration": [],
+      "description": "A conference featuring talks and panels on the future of artificial intelligence, machine learning, and ethics."
     }
   },
   {
-  "model": "events.Events",
-  "pk": 4,
-  "fields": {
-    "name": "Data Science Bootcamp",
-    "place_name": "Politecnico di Milano",
-    "place_address": "Piazza Leonardo da Vinci 32, Milano",
-    "price": "50.00",
-    "date": "2025-08-20T09:30:00Z",
-    "organizer_id": 18,
-    "registration": [11]
+    "model": "events.Events",
+    "pk": 4,
+    "fields": {
+      "name": "Data Science Bootcamp",
+      "place_name": "Politecnico di Milano",
+      "place_address": "Piazza Leonardo da Vinci 32, Milano",
+      "price": "50.00",
+      "date": "2025-08-20T09:30:00Z",
+      "organizer_id": 18,
+      "registration": [11],
+      "description": "An intensive bootcamp covering data analysis, statistics, and Python tools for aspiring data scientists."
+    }
   }
-}
 ]
