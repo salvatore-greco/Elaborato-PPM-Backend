@@ -41,7 +41,7 @@ def event_details_view(request, id:int) -> HttpResponse :
         for ev_user in event.registration.all():
             if ev_user.id == user.id:
                 registered = True
-        if request.user.is_organizer and request.user.id == event.organizer_id_id:
+        if request.user.is_authenticated and request.user.is_organizer and request.user.id == event.organizer_id_id:
             attendees = event.registration.all()
     else:
         if user.is_authenticated and not event.disabled:
