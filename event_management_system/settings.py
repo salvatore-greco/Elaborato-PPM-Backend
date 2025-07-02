@@ -107,12 +107,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
+FORMAT_MODULE_PATH=['events.formats']
 
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
-USE_I18N = True
+USE_I18N = False
 
 USE_TZ = True
 
@@ -133,4 +134,3 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 LOGOUT_REDIRECT_URL="home"
 LOGIN_URL='/users/login'
 MESSAGE_STORAGE='django.contrib.messages.storage.session.SessionStorage'
-DATE_FORMAT='j N, Y'
