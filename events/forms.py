@@ -19,11 +19,11 @@ class EventForm(ModelForm):
         super().__init__(*args, **kwargs)
 
         for field in self.fields.values():
-            field.required = False
+            field.required = True
 
     class Meta:
         model = Events
-        fields = ['name', 'place_name', 'place_address', 'price', 'date']
+        fields = ['name','description','place_name', 'place_address', 'price', 'date']
         widgets = {
             'date': forms.SplitDateTimeWidget(
                 date_attrs={'type': 'date'},

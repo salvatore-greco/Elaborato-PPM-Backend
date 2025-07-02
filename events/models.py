@@ -16,6 +16,7 @@ class Events(models.Model):
     date = models.DateTimeField(default=timezone.now)
     organizer_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='event_organizer')
     registration = models.ManyToManyField(to=CustomUser)
+    description = models.CharField(max_length=300)
     class Meta:
         permissions = [
             ("can_register", "Determine whether a user can register"),
