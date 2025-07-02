@@ -1,4 +1,6 @@
+from decimal import Decimal
 
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils import timezone
 from users.models import CustomUser
@@ -10,7 +12,7 @@ class Events(models.Model):
     name = models.CharField(max_length=50)
     place_name = models.CharField(max_length=50)
     place_address = models.CharField(max_length=100)
-    price = models.DecimalField(decimal_places=2, max_digits=5)
+    price = models.DecimalField(decimal_places=2, max_digits=5, validators=[MinValueValidator(Decimal('0.0'))])
     date = models.DateTimeField(default=timezone.now)
     organizer_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='event_organizer')
     registration = models.ManyToManyField(to=CustomUser)
