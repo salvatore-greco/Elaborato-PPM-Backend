@@ -55,7 +55,7 @@ class ManageEventView(PermissionRequiredMixin, UpdateView, DeletionMixin):
     def form_valid(self, form):
         if form.has_changed():
             messages.add_message(self.request, messages.SUCCESS, 'update')
-            return super().form_valid(form)
+            super().form_valid(form)
         return HttpResponseRedirect(self.request.path)
 
     def post(self, request, *args, **kwargs):
