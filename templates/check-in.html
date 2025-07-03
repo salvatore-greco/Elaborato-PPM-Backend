@@ -11,7 +11,7 @@
         let video = document.querySelector('video');
         // needed to extract imageData, needed by jsQR
         let canvasElement = document.querySelector('canvas');
-        let canvas = canvasElement.getContext('2d');
+        let canvas = canvasElement.getContext('2d', {willReadFrequently:true});
         let width = 0;
         let height = 0;
         let constrain = {video: true}
