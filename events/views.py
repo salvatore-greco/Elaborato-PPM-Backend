@@ -13,6 +13,7 @@ from events.forms import EventForm
 from events.models import Events
 import json
 
+
 # Create your views here.
 # def homepage_view(request):
 #     events = Events.objects.all()
@@ -29,10 +30,12 @@ class HomepageView(ListView):
             print(f'today {today} e.date {e.date}')
             e.disabled = e.date < today
         return queryset
-def event_details_view(request, id:int) -> HttpResponse :
+
+
+def event_details_view(request, id: int) -> HttpResponse:
     user = request.user
     event = get_object_or_404(Events, id=id)
-    event.disabled = event.date<now()
+    event.disabled = event.date < now()
     registered = False
     display_toast = False
     attendees = None
@@ -69,7 +72,7 @@ class ManageEventView(PermissionRequiredMixin, UpdateView, DeletionMixin):
     permission_required = ('events.change_events', 'events.delete_events')
     raise_exception = True
     model = Events
-    extra_context = {'disabled':None}
+    extra_context = {'disabled': None}
 
     # Called only by delete from deletion mixin
     def get_success_url(self):
@@ -95,10 +98,11 @@ class ManageEventView(PermissionRequiredMixin, UpdateView, DeletionMixin):
 
     def get(self, request, *args, **kwargs):
         event = self.get_object()
-        self.extra_context['disabled'] = event.date<now()
+        self.extra_context['disabled'] = event.date < now()
         if request.user.id != event.organizer_id_id:
             raise PermissionDenied
         return super().get(request, *args, **kwargs)
+
 
 class CreateEventView(PermissionRequiredMixin, CreateView):
     model = Events
@@ -113,11 +117,13 @@ class CreateEventView(PermissionRequiredMixin, CreateView):
         messages.add_message(self.request, messages.SUCCESS, 'created')
         return super().form_valid(form)
 
+
 class CheckInView(TemplateView):
     template_name = 'check-in.html'
 
+
 def validate_ticket(request):
     if request.method == 'POST':
-        data = json.loads(request.body).uuid
+        data = json.loads(request.body)
         return render(request, 'validation_result.html', context={'data': data})
     return HttpResponseNotAllowed(permitted_methods='POST')

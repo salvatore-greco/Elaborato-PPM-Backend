@@ -5,6 +5,7 @@
 
     <video playsinline autoplay></video>
     <canvas class="d-none"></canvas>
+    {% csrf_token %}
     <script src="{% static 'js/jsQR.js' %}"></script>
     <script>
         // it follows almost precisely jsqr demo example (and is all i need).
@@ -43,9 +44,12 @@
             decoded_code = jsQR(imageData.data, imageData.width, imageData.height);
             if (decoded_code){
                 if(decoded_code.data !== prev_decoded_code){
-                    fetch('events/validate', {
+                    fetch('validate', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
                         body: JSON.stringify({ uuid: decoded_code.data }),
                     })
                     prev_decoded_code = decoded_code.data;
