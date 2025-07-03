@@ -9,5 +9,6 @@ urlpatterns = [
     path("<pk>/manage", ManageEventView.as_view(), name='organizer-manage'),
     path("create", CreateEventView.as_view(), name="organizer-create"),
     path("checkin", CheckInView.as_view(), name="checkin"),
-    path('validate', views.validate_ticket, name='validate')
+    path('validate', views.validate_ticket, name='validate'),
+    path('validation-success', views.validation_success, name='validation-success')
 ]

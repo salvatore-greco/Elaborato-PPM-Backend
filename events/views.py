@@ -4,7 +4,7 @@ from django.core.exceptions import PermissionDenied
 from django.db.models import F, ExpressionWrapper, BooleanField
 from django.db.models.functions import Now
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect, HttpResponseNotAllowed
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, UpdateView, CreateView, TemplateView
 from django.views.generic.edit import DeletionMixin
@@ -124,6 +124,11 @@ class CheckInView(TemplateView):
 
 def validate_ticket(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
-        return render(request, 'validation_result.html', context={'data': data})
+        request.session['data'] = json.loads(request.body)
+        return redirect(reverse('events:validation-success'))
     return HttpResponseNotAllowed(permitted_methods='POST')
+
+def validation_success(request):
+    if request.method == 'GET':
+        return render(request, 'validation_result.html', context={'data':request.session['data']})
+    return HttpResponseNotAllowed(permitted_methods='GET')
