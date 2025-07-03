@@ -6,7 +6,7 @@ from django.db.models.functions import Now
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView, UpdateView, CreateView
+from django.views.generic import ListView, UpdateView, CreateView, TemplateView
 from django.views.generic.edit import DeletionMixin
 from django.utils.timezone import now
 from events.forms import EventForm
@@ -112,3 +112,6 @@ class CreateEventView(PermissionRequiredMixin, CreateView):
         form.instance.organizer_id_id = self.request.user.id
         messages.add_message(self.request, messages.SUCCESS, 'created')
         return super().form_valid(form)
+
+class CheckInView(TemplateView):
+    template_name = 'check-in.html'

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <video playsinline autoplay></video>
+    <script>
+    video = document.querySelector('video')
+        navigator.mediaDevices
+            .getUserMedia({
+                video: {
+                    facingMode: {exact: "environment"},
+                }
+            })
+        .then((stream) => {
+            window.stream=stream;
+            video.srcObject = stream;
+        })
+            .catch((err) => {
+                console.log(err);
+            });
+    </script>
+{% endblock %}
