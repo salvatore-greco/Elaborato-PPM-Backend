@@ -43,7 +43,11 @@
             decoded_code = jsQR(imageData.data, imageData.width, imageData.height);
             if (decoded_code){
                 if(decoded_code.data !== prev_decoded_code){
-                    console.log(decoded_code.data);
+                    fetch('events/validate', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ uuid: decoded_code.data }),
+                    })
                     prev_decoded_code = decoded_code.data;
                 }
             }

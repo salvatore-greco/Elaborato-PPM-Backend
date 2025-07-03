@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.db.models import F, ExpressionWrapper, BooleanField
 from django.db.models.functions import Now
-from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
+from django.http import HttpResponse, HttpRequest, HttpResponseRedirect, HttpResponseNotAllowed
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, UpdateView, CreateView, TemplateView
@@ -11,7 +11,7 @@ from django.views.generic.edit import DeletionMixin
 from django.utils.timezone import now
 from events.forms import EventForm
 from events.models import Events
-from datetime import datetime, timezone
+import json
 
 # Create your views here.
 # def homepage_view(request):
@@ -115,3 +115,9 @@ class CreateEventView(PermissionRequiredMixin, CreateView):
 
 class CheckInView(TemplateView):
     template_name = 'check-in.html'
+
+def validate_ticket(request):
+    if request.method == 'POST':
+        data = json.loads(request.body).uuid
+        return render(request, 'validation_result.html', context={'data': data})
+    return HttpResponseNotAllowed(permitted_methods='POST')
