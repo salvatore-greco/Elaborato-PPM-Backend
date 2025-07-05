@@ -21,7 +21,12 @@
         // Getting device type to open rear camera on phones or webcam on PC
         // https://stackoverflow.com/questions/16520186/how-to-detect-device-type-using-javascript
         if (navigator.userAgent.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile/i)){
-            constrain = {video: {facingMode: {exact: "environment"}}};
+            constrain = {
+                video: {
+                    facingMode: {exact: "environment"},
+                    frameRate:{max:20,ideal:15}
+                }
+            };
         }
         // https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
         navigator.mediaDevices
@@ -38,6 +43,7 @@
             .catch((err) => {
                 console.log(err);
             });
+        // https://github.com/cozmo/jsQR
         function callback() {
             canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
             const imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
@@ -46,12 +52,19 @@
                 if(decoded_code.data !== prev_decoded_code){
                     fetch('validate', {
                         method: 'POST',
+                        redirect: 'follow',
                         headers: {
                             'Content-Type': 'application/json',
                             'X-CSRFToken': '{{ csrf_token }}'
                         },
                         body: JSON.stringify({ uuid: decoded_code.data }),
                     })
+                        .then((response)=>{
+                            console.log('redirect');
+                        })
+                        .catch((err)=>{
+                            console.log('error '+ err);
+                        });
                     prev_decoded_code = decoded_code.data;
                 }
             }
