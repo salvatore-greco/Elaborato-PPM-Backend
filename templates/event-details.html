@@ -36,14 +36,18 @@
             </div>
         </div>
 
-        {% if user.is_organizer and attendees %}
+        {% if user.is_organizer %}
             <div class="card shadow-lg mt-5">
                 <div class="card-body">
                     <h2>List of attendees</h2>
                     <ul class="list-group">
+                    {% if attendees %}
                         {% for attendee in attendees %}
                             <li class="list-group-item">{{ attendee.first_name }} {{ attendee.last_name }}</li>
                         {% endfor %}
+                    {% else %}
+                        <div class="alert alert-warning">No attendees</div>
+                    {% endif %}
                     </ul>
                 </div>
             </div>
