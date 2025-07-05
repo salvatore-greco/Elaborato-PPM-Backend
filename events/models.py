@@ -24,7 +24,7 @@ class Events(models.Model):
             ("can_register", "Determine whether a user can register"),
             ("view_own_registration", "Determine whether a user can view his own registration"),
             ("view_attendee", "Determine whether a user can view attendee at their own events"),
-            ("scan_ticker", "organizer that can scan ticket")
+            ("scan_ticket", "organizer that can scan ticket")
         ]
 
 class Registration(models.Model):

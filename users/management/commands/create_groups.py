@@ -20,6 +20,7 @@ class Command(BaseCommand):
         organizer.permissions.add(permissions.get(codename='delete_events'))
         organizer.permissions.add(permissions.get(codename='view_own_registration'))
         organizer.permissions.add(permissions.get(codename='view_attendee'))
+        organizer.permissions.add(permissions.get(codename='scan_ticket'))
 
         attendee.permissions.add(permissions.get(codename='view_events'))
         attendee.permissions.add(permissions.get(codename='can_register'))
