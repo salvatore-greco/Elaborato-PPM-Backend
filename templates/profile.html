@@ -23,7 +23,7 @@
                         {{ event.name }}
                         <span class="badge bg-secondary">{{ event.date }}</span>
                     </a>
-                    <a href="{% url 'events:ticket-qr' event.id %}" class="btn btn-success list-group-item active rounded">Ticket</a>
+                    <a href="{% url 'events:ticket-qr' event.id %}" class="btn btn-success list-group-item active rounded {% if user.is_organizer %} d-none{% endif %}"><i class="bi bi-ticket-perforated-fill"></i >Ticket</a>
                 </div>
             {% endfor %}
         {% else %}
@@ -31,5 +31,6 @@
                 No events found.
             </div>
         {% endif %}
+        <a href="{% url 'events:checkin' %}" class="btn btn-primary {% if not user.is_organizer %}d-none{% endif %}"><i class="bi bi-upc-scan"></i> Scan ticket</a>
     </div>
 {% endblock %}
