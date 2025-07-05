@@ -5,7 +5,7 @@
 
     <video playsinline autoplay></video>
     <canvas class="d-none"></canvas>
-    <form class="d-none" id="form-req">
+    <form class="d-none" id="form-req" method="post" action="validate">
     {% csrf_token %}
         <input type="hidden" name="uuid" id="uuid">
     </form>

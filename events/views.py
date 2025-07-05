@@ -124,7 +124,8 @@ class CheckInView(TemplateView):
 
 def validate_ticket(request):
     if request.method == 'POST':
-        request.session['data'] = json.loads(request.body)
+        data = request.POST.get('uuid')
+        request.session['data'] = data
         return redirect(reverse('events:validation-success'))
     return HttpResponseNotAllowed(permitted_methods='POST')
 
