@@ -128,6 +128,7 @@ class CheckInView(PermissionRequiredMixin, TemplateView):
     raise_exception = True
 
 
+@permission_required('events.scan_ticket', raise_exception=True)
 def validate_ticket(request):
     if request.method == 'POST':
         data = request.POST.get('uuid')
@@ -148,12 +149,14 @@ def validate_ticket(request):
         return redirect(reverse_lazy('events:validation-result'))
     return HttpResponseNotAllowed(permitted_methods='POST')
 
+@permission_required('events.scan_ticket', raise_exception=True)
 def validation_result(request):
     if request.method == 'GET':
         return render(request, 'validation_result.html')
     return HttpResponseNotAllowed(permitted_methods='GET')
 
 
+@permission_required('events.can_register', raise_exception=True)
 def ticket_qr(request, id):
     ticket = Registration.objects.filter(user=request.user, event=id)
     base64_img=None
