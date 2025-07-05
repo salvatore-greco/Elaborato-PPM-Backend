@@ -10,7 +10,7 @@ from django.views.generic import ListView, UpdateView, CreateView, TemplateView
 from django.views.generic.edit import DeletionMixin
 from django.utils.timezone import now
 from events.forms import EventForm
-from events.models import Events
+from events.models import Events, Registration
 import json
 
 
@@ -39,22 +39,22 @@ def event_details_view(request, id: int) -> HttpResponse:
     registered = False
     display_toast = False
     attendees = None
-    attendance = event.registration.count()
+    attendance = event.event_registration.count()
     if request.method == 'GET':
-        for ev_user in event.registration.all():
+        for ev_user in event.event_registration.all():
             if ev_user.id == user.id:
                 registered = True
         if request.user.is_authenticated and request.user.is_organizer and request.user.id == event.organizer_id_id:
-            attendees = event.registration.all()
+            attendees = event.event_registration.all()
     else:
         if user.is_authenticated and not event.disabled:
             data = int(request.POST.get('btn'))
             display_toast = True
             if data == 1:
-                event.registration.add(user)
+                Registration.objects.create(user=request.user,event=event)
                 registered = True
             elif data == 0:
-                event.registration.remove(user)
+                Registration.objects.filter(user=request.user, event=event).delete()
                 registered = False
     context = {
         'event': event,
