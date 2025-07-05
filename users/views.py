@@ -39,6 +39,6 @@ def profile_view(request):
             events = Events.objects.filter(organizer_id=user.id)
         else:
             if not request.user.has_perm('events.view_own_registration'): raise PermissionDenied
-            events = Events.objects.filter(registration=user.id)
+            events = Events.objects.filter(event_registration=user.id)
         return render(request, 'profile.html',
                       {'first_name': user.first_name, 'last_name': user.last_name, 'events': events})

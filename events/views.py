@@ -1,17 +1,22 @@
+import base64
+from io import BytesIO
+
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib import messages
-from django.core.exceptions import PermissionDenied
-from django.db.models import F, ExpressionWrapper, BooleanField
-from django.db.models.functions import Now
-from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.core.exceptions import PermissionDenied, ValidationError
+
+from django.http import HttpResponse, HttpRequest, HttpResponseRedirect, HttpResponseNotAllowed
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView, UpdateView, CreateView
+from django.utils.http import urlencode
+from django.views.generic import ListView, UpdateView, CreateView, TemplateView
 from django.views.generic.edit import DeletionMixin
 from django.utils.timezone import now
 from events.forms import EventForm
-from events.models import Events
-from datetime import datetime, timezone
+from events.models import Events, Registration
+import qrcode
+from qrcode.image.pure import PyPNGImage
 
 # Create your views here.
 # def homepage_view(request):
@@ -29,29 +34,31 @@ class HomepageView(ListView):
             print(f'today {today} e.date {e.date}')
             e.disabled = e.date < today
         return queryset
-def event_details_view(request, id:int) -> HttpResponse :
+
+
+def event_details_view(request, id: int) -> HttpResponse:
     user = request.user
     event = get_object_or_404(Events, id=id)
-    event.disabled = event.date<now()
+    event.disabled = event.date < now()
     registered = False
     display_toast = False
     attendees = None
-    attendance = event.registration.count()
+    attendance = event.event_registration.count()
     if request.method == 'GET':
-        for ev_user in event.registration.all():
+        for ev_user in event.event_registration.all():
             if ev_user.id == user.id:
                 registered = True
         if request.user.is_authenticated and request.user.is_organizer and request.user.id == event.organizer_id_id:
-            attendees = event.registration.all()
+            attendees = event.event_registration.all()
     else:
         if user.is_authenticated and not event.disabled:
             data = int(request.POST.get('btn'))
             display_toast = True
             if data == 1:
-                event.registration.add(user)
+                Registration.objects.create(user=request.user,event=event)
                 registered = True
             elif data == 0:
-                event.registration.remove(user)
+                Registration.objects.filter(user=request.user, event=event).delete()
                 registered = False
     context = {
         'event': event,
@@ -69,7 +76,7 @@ class ManageEventView(PermissionRequiredMixin, UpdateView, DeletionMixin):
     permission_required = ('events.change_events', 'events.delete_events')
     raise_exception = True
     model = Events
-    extra_context = {'disabled':None}
+    extra_context = {'disabled': None}
 
     # Called only by delete from deletion mixin
     def get_success_url(self):
@@ -95,10 +102,11 @@ class ManageEventView(PermissionRequiredMixin, UpdateView, DeletionMixin):
 
     def get(self, request, *args, **kwargs):
         event = self.get_object()
-        self.extra_context['disabled'] = event.date<now()
+        self.extra_context['disabled'] = event.date < now()
         if request.user.id != event.organizer_id_id:
             raise PermissionDenied
         return super().get(request, *args, **kwargs)
+
 
 class CreateEventView(PermissionRequiredMixin, CreateView):
     model = Events
@@ -112,3 +120,50 @@ class CreateEventView(PermissionRequiredMixin, CreateView):
         form.instance.organizer_id_id = self.request.user.id
         messages.add_message(self.request, messages.SUCCESS, 'created')
         return super().form_valid(form)
+
+
+class CheckInView(PermissionRequiredMixin, TemplateView):
+    template_name = 'check-in.html'
+    permission_required = 'events.scan_ticket'
+    raise_exception = True
+
+
+def validate_ticket(request):
+    if request.method == 'POST':
+        data = request.POST.get('uuid')
+        try:
+            registration = Registration.objects.filter(ticket_uuid=data)
+            if registration.exists():
+                checked_in = registration.get().checked_in
+                if not checked_in:
+                    registration.update(checked_in=True)
+                    messages.add_message(request, messages.SUCCESS, 'Ticket successfully validated')
+                else:
+                    messages.add_message(request, messages.ERROR, 'Ticket already validated!')
+            else:
+                messages.add_message(request, messages.ERROR, 'Ticket not found')
+                # Send to validation result
+        except ValidationError:
+            messages.add_message(request, messages.ERROR, 'Ticket not found')
+        return redirect(reverse_lazy('events:validation-result'))
+    return HttpResponseNotAllowed(permitted_methods='POST')
+
+def validation_result(request):
+    if request.method == 'GET':
+        return render(request, 'validation_result.html')
+    return HttpResponseNotAllowed(permitted_methods='GET')
+
+
+def ticket_qr(request, id):
+    ticket = Registration.objects.filter(user=request.user, event=id)
+    base64_img=None
+    if ticket:
+        uuid = ticket.get().ticket_uuid
+        qr = qrcode.make(str(uuid), image_factory=PyPNGImage)
+
+        buffer = BytesIO()
+        qr.save(buffer)
+        img_bytes = buffer.getvalue()
+        base64_img = base64.b64encode(img_bytes).decode('utf-8')
+
+    return render(request, 'ticket.html', context={'qr':base64_img})

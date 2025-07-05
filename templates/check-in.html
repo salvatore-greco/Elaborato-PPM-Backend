@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <video playsinline autoplay class="d-block" style="max-width: 100%"></video>
+    <canvas class="d-none"></canvas>
+    <form class="d-none" id="form-req" method="post" action="validate">
+    {% csrf_token %}
+        <input type="hidden" name="uuid" id="uuid">
+    </form>
+    {% csrf_token %}
+    <script src="{% static 'js/jsQR.js' %}"></script>
+    <script>
+        // it follows almost precisely jsqr demo example (and is all i need).
+        let video = document.querySelector('video');
+        // needed to extract imageData, needed by jsQR
+        let canvasElement = document.querySelector('canvas');
+        let canvas = canvasElement.getContext('2d', {willReadFrequently:true});
+        let width = 0;
+        let height = 0;
+        let constrain = {video: true}
+        let decoded_code = null;
+        let prev_decoded_code = 0;
+        let form = document.getElementById('form-req');
+        let uuid = document.getElementById('uuid')
+        // Getting device type to open rear camera on phones or webcam on PC
+        // https://stackoverflow.com/questions/16520186/how-to-detect-device-type-using-javascript
+        if (navigator.userAgent.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile/i)){
+            constrain = {
+                video: {
+                    facingMode: {exact: "environment"},
+                    frameRate:{max:20,ideal:15}
+                }
+            };
+        }
+        // https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
+        navigator.mediaDevices
+            .getUserMedia(constrain)
+            .then((stream) => {
+                window.stream = stream;
+                video.srcObject = stream;
+                video.addEventListener("playing", () => {
+                    canvasElement.width = video.videoWidth;
+                    canvasElement.height = video.videoHeight;
+                })
+                requestAnimationFrame(callback)
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        // https://github.com/cozmo/jsQR
+        function callback() {
+            canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
+            const imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
+            decoded_code = jsQR(imageData.data, imageData.width, imageData.height);
+            if (decoded_code){
+                if(decoded_code.data !== prev_decoded_code){
+                    uuid.value = decoded_code.data;
+                    form.submit();
+                    prev_decoded_code = decoded_code.data;
+                }
+            }
+            requestAnimationFrame(callback);
+        }
+    </script>
+{% endblock %}
