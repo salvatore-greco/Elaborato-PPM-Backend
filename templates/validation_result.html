@@ -1,6 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <p>{{ data }}</p>
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+                <div class="alert alert-danger">{{ message.message }}</div>
+            {% else %}
+            <div class="alert alert-success">{{ message.message }}</div>
+            {% endif  %}
+        {% endfor %}
+
+        <div class="alert alert-{{ alert_level }}">{{ text }}</div>
+        {% else %}
+            <div class="alert alert-danger" role="alert">You need to scan a ticket</div>
+    {% endif %}
     <a href="{% url 'events:checkin' %}" class="btn btn-primary">Scan another ticket</a>
 {% endblock %}

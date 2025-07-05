@@ -1,9 +1,11 @@
+import base64
+from io import BytesIO
+
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib import messages
-from django.core.exceptions import PermissionDenied
-from django.db.models import F, ExpressionWrapper, BooleanField
-from django.db.models.functions import Now
+from django.core.exceptions import PermissionDenied, ValidationError
+
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect, HttpResponseNotAllowed
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
@@ -13,8 +15,8 @@ from django.views.generic.edit import DeletionMixin
 from django.utils.timezone import now
 from events.forms import EventForm
 from events.models import Events, Registration
-import json
-
+import qrcode
+from qrcode.image.pure import PyPNGImage
 
 # Create your views here.
 # def homepage_view(request):
@@ -128,25 +130,40 @@ class CheckInView(PermissionRequiredMixin, TemplateView):
 
 def validate_ticket(request):
     if request.method == 'POST':
-        result = None
         data = request.POST.get('uuid')
-        registration = Registration.objects.filter(ticket_uuid=data)
-        if registration.exists():
-            checked_in = registration.get().checked_in
-            if not checked_in:
-                registration.update(checked_in=True)
-                result = 'success'
+        try:
+            registration = Registration.objects.filter(ticket_uuid=data)
+            if registration.exists():
+                checked_in = registration.get().checked_in
+                if not checked_in:
+                    registration.update(checked_in=True)
+                    messages.add_message(request, messages.SUCCESS, 'Ticket successfully validated')
+                else:
+                    messages.add_message(request, messages.ERROR, 'Ticket already validated!')
             else:
-                result = 'already-checked-in'
-        else:
-            result = 'ticket-not-found'
-            # Send to validation result
-        url = reverse_lazy('events:validation-result')
-        param = {'result':result}
-        return redirect(f'{url}?{urlencode(param)}')
+                messages.add_message(request, messages.ERROR, 'Ticket not found')
+                # Send to validation result
+        except ValidationError:
+            messages.add_message(request, messages.ERROR, 'Ticket not found')
+        return redirect(reverse_lazy('events:validation-result'))
     return HttpResponseNotAllowed(permitted_methods='POST')
 
 def validation_result(request):
     if request.method == 'GET':
-        return render(request, 'validation_result.html', context={'data':request.GET.get('result')})
+        return render(request, 'validation_result.html')
     return HttpResponseNotAllowed(permitted_methods='GET')
+
+
+def ticket_qr(request, id):
+    ticket = Registration.objects.filter(user=request.user, event=id)
+    base64_img=None
+    if ticket:
+        uuid = ticket.get().ticket_uuid
+        qr = qrcode.make(str(uuid), image_factory=PyPNGImage)
+
+        buffer = BytesIO()
+        qr.save(buffer)
+        img_bytes = buffer.getvalue()
+        base64_img = base64.b64encode(img_bytes).decode('utf-8')
+
+    return render(request, 'ticket.html', context={'qr':base64_img})
