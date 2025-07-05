@@ -1,1 +1,84 @@
-[{"model": "users.customuser", "pk": 1, "fields": {"password": "pbkdf2_sha256$1000000$qyZhUuYVfWhXTDSfa3XQE4$30qhydmym0ujfTpEcp00mpt6hH9cZLX7PiagwiPrWFM=", "last_login": "2025-07-01T09:21:59.172Z", "is_superuser": true, "username": "admin", "first_name": "", "last_name": "", "email": "salvatore.greco3@edu.unifi.it", "is_staff": true, "is_active": true, "date_joined": "2025-06-21T15:45:22.718Z", "is_organizer": false, "groups": [], "user_permissions": []}}, {"model": "users.customuser", "pk": 11, "fields": {"password": "pbkdf2_sha256$1000000$AVu5mWyjD4DGuIKjFqA79S$ZL/rkmENHOcOiRgmFjcITXLfIMwjXmAqwnYSc6PDGy4=", "last_login": "2025-07-01T21:39:44.577Z", "is_superuser": false, "username": "salvatore", "first_name": "Salvatore", "last_name": "Greco", "email": "email@email.com", "is_staff": false, "is_active": true, "date_joined": "2025-06-24T15:45:36.023Z", "is_organizer": false, "groups": [8], "user_permissions": []}}, {"model": "users.customuser", "pk": 12, "fields": {"password": "pbkdf2_sha256$1000000$s316j8NGO7TsB5CvyswK6m$3lSZrey9RTrZzW768xxZko7vC9SSbt681nifQvQ546M=", "last_login": "2025-07-01T21:46:03.844Z", "is_superuser": false, "username": "organizzatore", "first_name": "Organizzatore", "last_name": "Accanito", "email": "email_organizzatore@mail.com", "is_staff": false, "is_active": true, "date_joined": "2025-06-25T09:26:59.265Z", "is_organizer": true, "groups": [7], "user_permissions": []}}, {"model": "users.customuser", "pk": 18, "fields": {"password": "pbkdf2_sha256$1000000$OxEfKeY1jK5gVtDr7EkbpA$hzdEryZSHeDWMDisTCNQxieMEGj13Y5rdwbVziCTl38=", "last_login": "2025-07-01T20:32:54.395Z", "is_superuser": false, "username": "organizzatrice", "first_name": "Organizzatrice", "last_name": "Di Eventi", "email": "organizzatrice@mail.com", "is_staff": false, "is_active": true, "date_joined": "2025-07-01T20:32:39.509Z", "is_organizer": true, "groups": [7], "user_permissions": []}}]
+[
+  {
+    "model": "users.customuser",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$qyZhUuYVfWhXTDSfa3XQE4$30qhydmym0ujfTpEcp00mpt6hH9cZLX7PiagwiPrWFM=",
+      "last_login": "2025-07-01T09:21:59.172Z",
+      "is_superuser": true,
+      "username": "admin",
+      "first_name": "",
+      "last_name": "",
+      "email": "salvatore.greco3@edu.unifi.it",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2025-06-21T15:45:22.718Z",
+      "is_organizer": false,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 11,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$AVu5mWyjD4DGuIKjFqA79S$ZL/rkmENHOcOiRgmFjcITXLfIMwjXmAqwnYSc6PDGy4=",
+      "last_login": "2025-07-01T21:39:44.577Z",
+      "is_superuser": false,
+      "username": "salvatore",
+      "first_name": "Salvatore",
+      "last_name": "Greco",
+      "email": "email@email.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-06-24T15:45:36.023Z",
+      "is_organizer": false,
+      "groups": [
+        8
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 12,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$s316j8NGO7TsB5CvyswK6m$3lSZrey9RTrZzW768xxZko7vC9SSbt681nifQvQ546M=",
+      "last_login": "2025-07-01T21:46:03.844Z",
+      "is_superuser": false,
+      "username": "organizzatore",
+      "first_name": "Organizzatore",
+      "last_name": "Accanito",
+      "email": "email_organizzatore@mail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-06-25T09:26:59.265Z",
+      "is_organizer": true,
+      "groups": [
+        7
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 18,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$OxEfKeY1jK5gVtDr7EkbpA$hzdEryZSHeDWMDisTCNQxieMEGj13Y5rdwbVziCTl38=",
+      "last_login": "2025-07-01T20:32:54.395Z",
+      "is_superuser": false,
+      "username": "organizzatrice",
+      "first_name": "Organizzatrice",
+      "last_name": "Di Eventi",
+      "email": "organizzatrice@mail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-07-01T20:32:39.509Z",
+      "is_organizer": true,
+      "groups": [
+        7
+      ],
+      "user_permissions": []
+    }
+  }
+]

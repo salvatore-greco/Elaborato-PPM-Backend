@@ -1,20 +1,19 @@
 [
   {
-    "model": "events.Events",
+    "model": "events.events",
     "pk": 1,
     "fields": {
       "name": "Hackathon 2025",
       "place_name": "Campus Milano",
       "place_address": "Via Roma 10, Milano",
       "price": "10.00",
-      "date": "2025-07-10T10:00:00Z",
+      "date": "2025-07-01T10:00:00Z",
       "organizer_id": 12,
-      "registration": [11],
       "description": "A full-day hackathon where teams of developers and designers build innovative solutions in a creative tech environment."
     }
   },
   {
-    "model": "events.Events",
+    "model": "events.events",
     "pk": 2,
     "fields": {
       "name": "Workshop Python",
@@ -23,12 +22,11 @@
       "price": "0.00",
       "date": "2025-07-15T15:00:00Z",
       "organizer_id": 12,
-      "registration": [11],
       "description": "A free Python workshop for beginners to learn the basics of programming through hands-on coding exercises."
     }
   },
   {
-    "model": "events.Events",
+    "model": "events.events",
     "pk": 3,
     "fields": {
       "name": "AI Conference",
@@ -37,12 +35,11 @@
       "price": "25.00",
       "date": "2025-08-01T09:00:00Z",
       "organizer_id": 12,
-      "registration": [],
       "description": "A conference featuring talks and panels on the future of artificial intelligence, machine learning, and ethics."
     }
   },
   {
-    "model": "events.Events",
+    "model": "events.events",
     "pk": 4,
     "fields": {
       "name": "Data Science Bootcamp",
@@ -51,8 +48,30 @@
       "price": "50.00",
       "date": "2025-08-20T09:30:00Z",
       "organizer_id": 18,
-      "registration": [11],
       "description": "An intensive bootcamp covering data analysis, statistics, and Python tools for aspiring data scientists."
+    }
+  },
+  {
+    "model": "events.events",
+    "pk": 8,
+    "fields": {
+      "name": "FS Austria",
+      "place_name": "Redbull Ring",
+      "place_address": "Red Bull Ring Str. 1, Spielberg, Austria",
+      "price": "20.00",
+      "date": "2025-08-01T08:00:00Z",
+      "organizer_id": 12,
+      "description": "Formula Student Austria is an international engineering competition where university teams design, build, and race formula-style cars. Held at the Red Bull Ring, it challenges innovation, teamwork, and performance on and off the track."
+    }
+  },
+  {
+    "model": "events.registration",
+    "pk": 5,
+    "fields": {
+      "user": 11,
+      "event": 8,
+      "ticket_uuid": "56b04b3a-d6cb-44fe-a6fe-cdde7f01b1da",
+      "checked_in": false
     }
   }
 ]
