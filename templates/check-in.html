@@ -3,10 +3,21 @@
 
 {% block content %}
 
-    <video playsinline autoplay class="d-block" style="max-width: 100%"></video>
+    {#    <video playsinline autoplay class="d-block" style="max-width: 100%"></video>#}
+    <div class="d-flex flex-column align-items-center justify-content-start min-vh-100 py-1 px-3">
+        <h2 class="mb-4 text-center">QR code scanner</h2>
+
+        <div class="border rounded shadow-sm overflow-hidden" style="max-width: 100%">
+            <video playsinline autoplay class="d-block w-100 rounded-1"></video>
+        </div>
+
+        <p class="text-body-secondary mt-3 text-center">
+            Position the QR code inside the frame to scan it automatically.
+        </p>
+    </div>
     <canvas class="d-none"></canvas>
     <form class="d-none" id="form-req" method="post" action="validate">
-    {% csrf_token %}
+        {% csrf_token %}
         <input type="hidden" name="uuid" id="uuid">
     </form>
     {% csrf_token %}
