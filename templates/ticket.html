@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if qr %}
+    <img src="data:image/png;base64,{{ qr }}" alt="QR Code">
+    {% else %}
+    <div class="alert alert-danger">Registration needed to display ticket</div>
+    {% endif %}
+{% endblock %}

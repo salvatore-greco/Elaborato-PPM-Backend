@@ -6,7 +6,7 @@ app_name = 'events'
 
 urlpatterns = [
     path("<int:id>", views.event_details_view, name='event-details'),
-    path("<int:id>/ticket", views.event_details_view, name='event-ticket'),
+    path("<int:id>/ticket", views.ticket_qr, name='ticket-qr'),
     path("<pk>/manage", ManageEventView.as_view(), name='organizer-manage'),
     path("create", CreateEventView.as_view(), name="organizer-create"),
     path("checkin", CheckInView.as_view(), name="checkin"),
