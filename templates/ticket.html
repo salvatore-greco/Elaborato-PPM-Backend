@@ -1,9 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% if qr %}
-    <img src="data:image/png;base64,{{ qr }}" alt="QR Code">
-    {% else %}
-    <div class="alert alert-danger">Registration needed to display ticket</div>
-    {% endif %}
+    <div class="d-flex justify-content-center align-items-start py-4">
+        {% if qr %}
+            <div class="card shadow d-flex flex-column align-items-center p-4 gap-3">
+                <h5 class="card-title">Your Ticket</h5>
+                <img src="data:image/png;base64,{{ qr }}" alt="QR Code" class="img-fluid border rounded p-2 bg-light">
+                <p class="text-muted text-center mb-0">Please present this QR code at the entrance.</p>
+            </div>
+        {% else %}
+            <div class="alert alert-danger text-center" role="alert">
+                Registration needed to display ticket
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}
