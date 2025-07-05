@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
@@ -6,6 +7,7 @@ from django.db.models.functions import Now
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect, HttpResponseNotAllowed
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
+from django.utils.http import urlencode
 from django.views.generic import ListView, UpdateView, CreateView, TemplateView
 from django.views.generic.edit import DeletionMixin
 from django.utils.timezone import now
@@ -118,18 +120,33 @@ class CreateEventView(PermissionRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class CheckInView(TemplateView):
+class CheckInView(PermissionRequiredMixin, TemplateView):
     template_name = 'check-in.html'
+    permission_required = 'events.scan_ticket'
+    raise_exception = True
 
 
 def validate_ticket(request):
     if request.method == 'POST':
+        result = None
         data = request.POST.get('uuid')
-        request.session['data'] = data
-        return redirect(reverse('events:validation-success'))
+        registration = Registration.objects.filter(ticket_uuid=data)
+        if registration.exists():
+            checked_in = registration.get().checked_in
+            if not checked_in:
+                registration.update(checked_in=True)
+                result = 'success'
+            else:
+                result = 'already-checked-in'
+        else:
+            result = 'ticket-not-found'
+            # Send to validation result
+        url = reverse_lazy('events:validation-result')
+        param = {'result':result}
+        return redirect(f'{url}?{urlencode(param)}')
     return HttpResponseNotAllowed(permitted_methods='POST')
 
-def validation_success(request):
+def validation_result(request):
     if request.method == 'GET':
-        return render(request, 'validation_result.html', context={'data':request.session['data']})
+        return render(request, 'validation_result.html', context={'data':request.GET.get('result')})
     return HttpResponseNotAllowed(permitted_methods='GET')

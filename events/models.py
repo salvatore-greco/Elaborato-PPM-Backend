@@ -23,7 +23,8 @@ class Events(models.Model):
         permissions = [
             ("can_register", "Determine whether a user can register"),
             ("view_own_registration", "Determine whether a user can view his own registration"),
-            ("view_attendee", "Determine whether a user can view attendee at their own events")
+            ("view_attendee", "Determine whether a user can view attendee at their own events"),
+            ("scan_ticker", "organizer that can scan ticket")
         ]
 
 class Registration(models.Model):
@@ -34,5 +35,6 @@ class Registration(models.Model):
         editable=False,
         default=uuid.uuid4
     )
+    checked_in = models.BooleanField(default=False)
     class Meta:
         constraints = [models.UniqueConstraint(fields=['user', 'event'], name='unique_user_event')]

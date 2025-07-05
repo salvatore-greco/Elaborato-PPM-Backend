@@ -3,7 +3,7 @@
 
 {% block content %}
 
-    <video playsinline autoplay></video>
+    <video playsinline autoplay class="d-block" style="max-width: 100%"></video>
     <canvas class="d-none"></canvas>
     <form class="d-none" id="form-req" method="post" action="validate">
     {% csrf_token %}
@@ -56,21 +56,6 @@
             decoded_code = jsQR(imageData.data, imageData.width, imageData.height);
             if (decoded_code){
                 if(decoded_code.data !== prev_decoded_code){
-//                    fetch('validate', {
-//                        method: 'post',
-//                        redirect: 'follow',
-//                        headers: {
-//                            'content-type': 'application/json',
-//                            'x-csrftoken': '{{ csrf_token }}'
-//                        },
-//                        body: json.stringify({ uuid: decoded_code.data }),
-//                    })
-//                        .then((response)=>{
-//                            console.log('redirect');
-//                        })
-//                        .catch((err)=>{
-//                            console.log('error '+ err);
-//                        });
                     uuid.value = decoded_code.data;
                     form.submit();
                     prev_decoded_code = decoded_code.data;
