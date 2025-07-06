@@ -31,7 +31,6 @@ class HomepageView(ListView):
         queryset = super().get_queryset()
         today = now()
         for e in queryset:
-            print(f'today {today} e.date {e.date}')
             e.disabled = e.date < today
         return queryset
 
