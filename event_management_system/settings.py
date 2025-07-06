@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 from django.urls import reverse
 
@@ -22,12 +22,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-r9nx7d%au@qfjdl5tvz$x*l3blr_1h$094c8=%*e!)v5-j7u2s'
+# SECRET_KEY = 'django-insecure-r9nx7d%au@qfjdl5tvz$x*l3blr_1h$094c8=%*e!)v5-j7u2s'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-r9nx7d%au@qfjdl5tvz$x*l3blr_1h$094c8=%*e!)v5-j7u2s')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', False)
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['https://elaborato-ppm-backend.onrender.com/']
 
 
 # Application definition
@@ -136,3 +137,5 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 LOGOUT_REDIRECT_URL="home"
 LOGIN_URL='/users/login'
 MESSAGE_STORAGE='django.contrib.messages.storage.session.SessionStorage'
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
