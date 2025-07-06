@@ -34,7 +34,7 @@
       "date_joined": "2025-06-24T15:45:36.023Z",
       "is_organizer": false,
       "groups": [
-        8
+        2
       ],
       "user_permissions": []
     }
@@ -55,7 +55,7 @@
       "date_joined": "2025-06-25T09:26:59.265Z",
       "is_organizer": true,
       "groups": [
-        7
+        1
       ],
       "user_permissions": []
     }
@@ -76,7 +76,7 @@
       "date_joined": "2025-07-01T20:32:39.509Z",
       "is_organizer": true,
       "groups": [
-        7
+        1
       ],
       "user_permissions": []
     }
