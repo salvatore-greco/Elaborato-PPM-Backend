@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-r9nx7d%au@qfjdl5tvz$x
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', False)
 
-ALLOWED_HOSTS = ['https://elaborato-ppm-backend.onrender.com/']
+ALLOWED_HOSTS = ['https://elaborato-ppm-backend.onrender.com']
 
 
 # Application definition
